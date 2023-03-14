@@ -4,6 +4,7 @@ import time
 from player import Player
 from activities import *
 from crimes import *
+from careers import *
 
 #create player
 gender = input("M or F\n")
@@ -39,6 +40,10 @@ money = 0 #CHANGE THIS BACK TO 0 THIS IS A TEST VALUE
 inPrison = False
 agePrison = 0
 sentence = 0
+
+#CAREER STATS
+roleTitle = ""
+salary = 0.00
 while alive == True:
     print("choose an option")
     print("1. activity")
@@ -117,6 +122,34 @@ while alive == True:
     elif choice == "2":
         #list activities
         print("CAREER")
+        if age < 18:
+            print("you are to young for this!")
+
+        else:
+            print("1. APPLY")
+            print("2. QUIT")
+            task = input("Select using number ")
+            if task == "1":
+                if roleTitle == "none":
+                    roleTitle = Apply.jobTitle()
+                    salary = Apply.salary(roleTitle)
+                    print("JOB OPENING")
+                    print(roleTitle + "paying £"+str(salary))
+                    confirm = input("Do you want to apply? Y or N ")
+                    if confirm.lower() == "y":
+                        successful = Apply.success(roleTitle, looks, happiness, smarts, health)
+            
+                    if confirm.lower() == "n":
+                        print("you did not apply in the end.")
+                else:
+                    print("please quit your current job first")
+            
+            elif task == "2":
+                if roleTitle != "none":
+                    roleTitle = Quit.jobRole(roleTitle)
+                    salary = Quit.salary(salary)
+                else:
+                    print("You cant quit as you have no job")
     
     elif choice == "3":
         #list relations
@@ -137,6 +170,9 @@ while alive == True:
             health = Player.prison_healthAgeUp(health)
             happiness = Player.prison_happinessAgeUP(happiness)
             looks = Player.prison_looksAgeUP(looks)
+        
+        money = money + Tax.income(salary)
+        money = round(money, 2)
         print("====== stats ======")
         print("Health: " + str(health))
         print("Looks; " + str(looks))

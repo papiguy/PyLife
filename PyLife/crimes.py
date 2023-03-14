@@ -1,39 +1,43 @@
 import random as r
 import time
 
-class Crime:
-    def depositMoney(money, gainsFromCrime):
-        money = money+gainsFromCrime
-        return money
+class Robbery:
+    def target():
+        targets = ["basic house", "shed", "mansion", "keyboard villa"]
+        target = r.choice(targets)
+        return target
     
-    def robbery(inPrison, money):
-        #each house will have its own success rate. 
-        #the lower houses will be easier and the higher end houses will be harder to rob without
-        #being arrested
-        houses = ["mansion", "run down shed", "basic house"]
-
-        target = r.choice(houses)
-
+    def value(target):
         if target == "basic house":
-            potential_houseValue = [10962,21356,30342, 15000,17654,11769]
-            houseValue = r.choice(potential_houseValue)
-            print("you think about robbing a basic house with the value of: £" +houseValue)
-            confirmation = input("ARE YOU SURE YOU WANT TO COMMIT THIS CRIME? Y or N")
-            if confirmation.upper() == "Y":
-                success = r.randint(1,100)
-                if success >= 30:
-                    print("successfully robbed...")
-                    print("£"+str(houseValue)+" added to your account")
-                    inPrison = False
-                    return inPrison
-            
-                else:
-                    print("you were arrested")
-                    inPrison = True
-                    return inPrison
+            potentialValues = [12412,23689,25971,5230]
+            value = r.choice(potentialValues)
+        
+        elif target == "shed":
+            potentialValues = [122,420,539,823,1032]
+            value = r.choice(potentialValues)
+        
+        elif target == "mansion":
+            potentialValues = [502345,75873,90357,100780,123090,109999]
+            value = r.choice(potentialValues)
 
+        elif target == "keyboard villa":
+            potentialValues = [100000,250000,507777,1079902]
+            value = r.choice(potentialValues)
+        
+        return value
+        
+    def attempt(target):
+        if target == "basic house":
+            failChance = 20
+        elif target == "shed":
+            failChance = 2
+        elif target == "mansion":
+            failChance = 65
+        elif target == "keyboard villa":
+            failChance = 85
 
-            if confirmation.upper() == "N":
-                print("you had some strange thoughts")
-
-    
+        successRoll = r.randint(1,100)
+        if successRoll > failChance:
+            return True
+        else:
+            return False

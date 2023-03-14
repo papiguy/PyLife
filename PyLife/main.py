@@ -37,6 +37,8 @@ alive = 1
 age = 0
 money = 0 #CHANGE THIS BACK TO 0 THIS IS A TEST VALUE
 inPrison = False
+agePrison = 0
+sentence = 0
 while alive == True:
     print("choose an option")
     print("1. activity")
@@ -81,9 +83,36 @@ while alive == True:
                 if confirmation.upper() == "N":
                     print("cancelled...")
             if task == "5":
-                print("crimes!")
+                if inPrison == True:
+                    print("you cannot commit crimes while in prison")
+                
+                else:
+                    print("===== crimes =====")
+                    print("1. robbery")
+                    print("2. murder #mystery# - COMING SOON")
+                    #etc
+                    #etc
+                    crime = input("Which one do you want to commit? ENTER NUMBER\n")
+                    if crime == "1":
+                        target = Robbery.target()
+                        value = Robbery.value(target)
+                        print("Target: "+target+ "Value: £"+str(value))
+                        confirmation = input("do you want to?" "Y or N\n")
+                        if confirmation.upper() == "Y":
+                            success = Robbery.attempt(target)
+                            if success == True:
+                                money = money + value
+                                print("£"+str(value)+" added to your bank account")
+                            else:
+                                #COMING SOON - DYNAMIC SENTENCE LENGTHS
+                                inPrison = True
+                                agePrison = age
+                                sentence = 5
+                                print("You were sentenced to y years in prison")
+                
         if age <= 18 and task == "4":
             print("YOU ARE TOO YOUNG FOR THIS!!!")
+        
     
     elif choice == "2":
         #list activities
@@ -102,12 +131,19 @@ while alive == True:
         happiness = Player.ageUp_happiness(happiness)
         smarts = Player.ageUp_smarts(smarts)
         deathChance = Player.deathChance_inc(deathChance,age,happiness,health,smarts, inPrison)
+        if (age - agePrison) == sentence:
+            inPrison = False
+        if inPrison == True:
+            health = Player.prison_healthAgeUp(health)
+            happiness = Player.prison_happinessAgeUP(happiness)
+            looks = Player.prison_looksAgeUP(looks)
         print("====== stats ======")
         print("Health: " + str(health))
         print("Looks; " + str(looks))
         print("Smarts:" + str(smarts))
         print("Happiness: " + str(happiness))
         print("DeathChance: " + str(deathChance))
+        print("InPrison: " +str(inPrison))
         print("\n")
         print("£"+str(money))
         age = age +1

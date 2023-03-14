@@ -56,8 +56,9 @@ class Activity:
     
     def happytimes(happiness):
         happyActivity = ["spent time with family", "went on a wok", "you cranked 90s on fortnite"]
+        activity = r.choice(happyActivity)
         enjoymentScale = r.randint(1,100)
-        print("you " +happyActivity)
+        print("you " + activity)
         print("you enjoyed it: " +str(enjoymentScale)+"/100")
         if enjoymentScale < 25 and enjoymentScale > 10:
             happiness = happiness - r.randint(1,3)

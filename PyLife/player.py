@@ -186,6 +186,19 @@ class Player:
         
         return smarts
     
+    #IN PRISON DECREASES
+    def prison_happinessAgeUP(happiness):
+        happiness = happiness - 2
+        return happiness
+    
+    def prison_looksAgeUP(looks):
+        looks = looks - 2
+        return looks
+    
+    def prison_healthAgeUp(health):
+        health = health - 3
+        return health
+    
 
     #these are now all RANDOM EVENTS THAT COULD AFFECT THE PLAYER AND REQUIRE ACTION
     #COMING SOON        

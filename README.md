@@ -1,5 +1,5 @@
 # PyLife
-An early version of PyLife, weekly updates
+Early version
 
 IN ORDER TO PLAY PYLIFE
 Download the PyLife folder.

@@ -100,7 +100,7 @@ class Apply:
 class Quit:
 
     def jobRole(jobrole):
-        jobrole = "none"
+        jobrole = ""
         return jobrole
     
     def salary(salary):

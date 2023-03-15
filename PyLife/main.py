@@ -5,6 +5,7 @@ from player import Player
 from activities import *
 from crimes import *
 from careers import *
+#from assets import *
 
 #create player
 gender = input("M or F\n")
@@ -58,6 +59,8 @@ while alive == True:
         print("3. Go to school")
         print("4. Plastic surgery")
         print("5. Crimes")
+        print("6. Lottery")
+        print("7. Gym")
         task = input()
         if task == "1":
             health = Activity.doctor(health)
@@ -94,7 +97,7 @@ while alive == True:
                 else:
                     print("===== crimes =====")
                     print("1. robbery")
-                    print("2. murder #mystery# - COMING SOON")
+                    print("2. bank heist")
                     #etc
                     #etc
                     crime = input("Which one do you want to commit? ENTER NUMBER\n")
@@ -113,10 +116,57 @@ while alive == True:
                                 inPrison = True
                                 agePrison = age
                                 sentence = 5
-                                print("You were sentenced to y years in prison")
+                                print("You were sentenced to "+str(sentence)+" years in prison")
+                    
+                    elif crime == "2":
+                        potentialValue = BankHeist.value()
+                        print("The banks portential value £"+str(potentialValue))
+                        confirm = input("Do you want to do the heist(Y or N): ")
+                        if confirm.lower() == "y":
+                            crewCount = BankHeist.crewCount()
+                            crewCut = BankHeist.crewCut(crewCount)
+                            tools = BankHeist.tools(crewCount)
+                            getawayVeichle_Type = BankHeist.getawayVeichle_Type(crewCount)
+                            print("GetawayVeichleType: "+getawayVeichle_Type)
+                            getawayVeichle_Speed = BankHeist.getawayVeichle_Speed(getawayVeichle_Type)
+                            print("Veichle Speed: " +str(getawayVeichle_Speed)+ " MPH")
+                            getawayVeichle_Cost = BankHeist.getawayVeichle_Cost(getawayVeichle_Type)
+                            disguise_Type = BankHeist.disguise_Type(crewCount)
+                            disguise_Cost = BankHeist.disguise_Cost(disguise_Type, crewCount)
+                            totalSetupCost = BankHeist.totalSetupCost(tools, getawayVeichle_Cost, disguise_Cost)
+                            print("TOTAL SETUP COST: £" +str(totalSetupCost))
+                            confirmation = input("Are you willing to go ahead with this? Y or N: ")
+                            if confirmation.lower() == "y":
+                                if money < totalSetupCost:
+                                    print("you cannot due to not having money")
+                                    print("setup cost not deducted from account")
+                                else:
+                                    money = money - totalSetupCost
+                                    print("You start the heist...")
+                                    time.sleep(3)
+                                    policeSpeed = BankHeist.policeSpeed()
+                                    inPrison = BankHeist.arrested(policeSpeed, getawayVeichle_Speed, disguise_Type)
+                                    if inPrison != True:
+                                        money = BankHeist.depositMoney(potentialValue, crewCut)
+                            
+                            else:
+                                print("you went back on your decision")
+                        
+                        else:
+                            print("you went back on your choice.")
                 
         if age <= 18 and task == "4":
             print("YOU ARE TOO YOUNG FOR THIS!!!")
+        
+        if task == "6":
+            if age < 16:
+                print("you are too young")
+            else:
+                money = Activity.lottery(money)
+        
+        if task == "7":
+            health = Activity.gym(health)
+                
         
     
     elif choice == "2":
@@ -130,7 +180,7 @@ while alive == True:
             print("2. QUIT")
             task = input("Select using number ")
             if task == "1":
-                if roleTitle == "none":
+                if roleTitle == "":
                     roleTitle = Apply.jobTitle()
                     salary = Apply.salary(roleTitle)
                     print("JOB OPENING")
@@ -145,7 +195,7 @@ while alive == True:
                     print("please quit your current job first")
             
             elif task == "2":
-                if roleTitle != "none":
+                if roleTitle != "":
                     roleTitle = Quit.jobRole(roleTitle)
                     salary = Quit.salary(salary)
                 else:
@@ -170,6 +220,8 @@ while alive == True:
             health = Player.prison_healthAgeUp(health)
             happiness = Player.prison_happinessAgeUP(happiness)
             looks = Player.prison_looksAgeUP(looks)
+            roleTitle = Quit.jobRole(roleTitle)
+            salary = Quit.salary(salary)
         
         money = money + Tax.income(salary)
         money = round(money, 2)

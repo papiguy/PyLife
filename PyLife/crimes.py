@@ -41,3 +41,154 @@ class Robbery:
             return True
         else:
             return False
+        
+class BankHeist:
+    def value():
+        value = r.randint(1000000,200000000)
+        return value
+    
+    #SETUP THE HEIST
+    def crewCount():
+        valid = False
+        while valid == False:
+            crewCount = int(input("How many people would you like on this heist? Enter a number (Max 5) "))
+            if crewCount > 5:
+                print("too many!")
+            else:
+                valid = True
+                return crewCount
+    def crewCut(crewCount):
+        if crewCount > 0:
+            cut = input("How much of the final cut should each crew memebr recieve (%)")
+            cut = float(cut)
+            cut = cut / 100
+            return cut
+
+        
+    def tools(crewCount):
+        print("each crew member should have one")
+        if crewCount == 0:
+            crewCount = crewCount +1
+        toolCost = r.randint(1000,25000)
+        totalToolCost = toolCost * crewCount
+
+        return totalToolCost
+    #any "getawayVeichle_[attribute] defines the veichles stats and type"
+    def getawayVeichle_Type(crewCount):
+        if crewCount == 0:
+            crewCount = crewCount+1
+        
+        if crewCount <= 2:
+            getawayVeichle_Type = "motorcycle"
+
+        if crewCount > 2 and crewCount < 5:
+            getawayVeichle_Type = "sedan"
+        
+        if crewCount >= 5:
+            getawayVeichle_Type = "van"
+        
+        return getawayVeichle_Type
+    
+    def getawayVeichle_Cost(getawayVeichle_Type):
+        if getawayVeichle_Type == "motorcycle":
+            lowerCost = 2500
+            upperCost = 7000
+        if getawayVeichle_Type == "sedan":
+            lowerCost = 5000
+            upperCost = 15000
+        if getawayVeichle_Type == "van":
+            lowerCost = 10000
+            upperCost = 20000
+        
+        cost = r.randint(lowerCost,upperCost)
+        return cost
+    
+    def getawayVeichle_Speed(getawayVeichle_Type):
+        if getawayVeichle_Type == "motorcycle":
+            maxSpeed = 300
+            minSpeed = 80
+        if getawayVeichle_Type == "sedan":
+            maxSpeed = 200
+            minSpeed = 80
+        if getawayVeichle_Type == "van":
+            maxSpeed = 150
+            minSpeed = 80
+        
+        speed = r.randint(minSpeed,maxSpeed)
+        return speed
+    #defines the attributes of disguise_[attribute]
+    def disguise_Type(crewCount):
+        disguises = ["security", "bug exterminators", "basic masks", "none"]
+        print("1. security = HIGH POTENTIAL COST")
+        print("2. bug exterminators = MEDIUM POTENTIAL COST")
+        print("3. Basic masks = LOW POTENTIAL COST")
+        print("4. None - NO COST")
+        type = int(input("Choose a disguise using the accociated number: "))
+        if type == 1:
+            disguiseUsed = disguises[0]
+        if type == 2:
+            disguiseUsed = disguises[1]
+        if type == 3:
+            disguiseUsed = disguises[2]
+        if type == 4:
+            disguiseUsed = disguises[3]
+        return disguiseUsed
+    
+    def disguise_Cost(disguise_Type, crewCount):
+
+        maxCost = 1
+        minCost = 0
+        if disguise_Type == "security":
+            minCost = 2500
+            maxCost = 25000
+        if disguise_Type == "bug exterminators":
+            minCost = 1000
+            maxCost = 10000
+        if disguise_Type == "basic masks":
+            minCost = 500
+            maxCost = 2500
+        
+        cost = r.randint(minCost,maxCost)
+        if disguise_Type =="none":
+            cost = 0
+        
+        totalCost = cost * crewCount
+        
+        return totalCost
+    #def hacking
+    def totalSetupCost(tools, getawayVeichle, disguise): #,hacking may be readded soon
+        total = int(tools) + int(getawayVeichle) + int(disguise) #+ hacking
+        return total
+    
+    #GETAWAY SYSTEM
+
+    #POLICE
+    def policeSpeed():
+        minSpeed = 78
+        maxSpeed = 299
+        speed = r.randint(minSpeed, maxSpeed)
+        return speed
+    
+    def arrested(policeSpeed, getawayVeichle_Speed, disguise):
+        if disguise == "security":
+            policeSpeed = policeSpeed - 15
+        if disguise == "bug exterminators":
+            policeSpeed = policeSpeed - 5
+        if disguise == "basic masks":
+            policeSpeed = policeSpeed - 2
+        if disguise == "none":
+            policeSpeed = policeSpeed - 0
+        
+        if policeSpeed > getawayVeichle_Speed:
+            return True
+        else:
+            return False
+    
+    def depositMoney(value,crewCut):
+        finalCrewCut = crewCut * value
+        playerTake = value - finalCrewCut
+        print("===== HEIST RESULTS =====")
+        print("TOTAL TAKE: £"+str(value))
+        print("CREW CUT: "+str(crewCut*100)+"%")
+        print("YOUR TAKE: £"+str(playerTake))
+        return playerTake

@@ -197,8 +197,4 @@ class Player:
     
     def prison_healthAgeUp(health):
         health = health - 3
-        return health
-    
-
-    #these are now all RANDOM EVENTS THAT COULD AFFECT THE PLAYER AND REQUIRE ACTION
-    #COMING SOON        
+        return health      

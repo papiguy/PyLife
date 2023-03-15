@@ -1,3 +1,4 @@
+from cmath import cos
 import random as r
 import time
 
@@ -91,4 +92,32 @@ class Activity:
             looks = looks - r.randint(1,10)
 
         return looks
+
+
+    def lottery(money):
+        costToEnter = r.randint(1,25)
+        jackpot = r.randint(100000,900000000)
+        print("To enter the lottery it costs: £"+str(costToEnter))
+        print("PRIZE: £" +str(jackpot))
+        confirm = input("Y or N\n")
+        if confirm.lower() == "y":
+            chance = r.randint(1,100)
+            if chance == 1:
+                print("YOU WON THE LOTTERY!")
+                money = money + jackpot
+                return money
+            
+            else:
+                money = money - costToEnter
+                return money
+            
+    def gym(health):
+        print("you go to the gym and its beneficial")
+        gains = r.randint(1,25)#
+        health = health + gains
+        if health > 100:
+            health = 100
+        return health
+    
+    
     

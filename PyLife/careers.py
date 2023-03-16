@@ -124,7 +124,10 @@ class Tax:
             toTaxSalary = salary - 12571
             taxedSalary = toTaxSalary * taxRate
             takeHomeSalary = salary - taxedSalary
+        
+        elif salary < 20000 and salary > 0:
+            takeHomeSalary = salary
 
-        else:
+        elif salary == 0:
             takeHomeSalary = 0.00
         return takeHomeSalary

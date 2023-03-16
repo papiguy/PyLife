@@ -1,8 +1,5 @@
-from email.mime import base
 import random as r
 import time
-
-from numpy import take
 
 class Apply:
     def jobTitle():

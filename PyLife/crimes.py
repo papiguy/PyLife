@@ -62,6 +62,8 @@ class BankHeist:
             cut = input("How much of the final cut should each crew memebr recieve (%)")
             cut = float(cut)
             cut = cut / 100
+        else:
+            cut = 0.0
             return cut
 
         
@@ -183,6 +185,15 @@ class BankHeist:
             return True
         else:
             return False
+
+    def sentence(value):
+        sentence = 0
+        for i in range(1,value, 900000):
+            sentence = sentence + 1
+        
+        print("You were arrested and sent to prison for: " +str(sentence)+"years")
+        
+        return sentence
     
     def depositMoney(value,crewCut):
         finalCrewCut = crewCut * value

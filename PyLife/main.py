@@ -5,9 +5,35 @@ from player import Player
 from activities import *
 from crimes import *
 from careers import *
+from clearsave import *
 #from assets import *
 
 #create player
+print("===================================\n")
+print("""______      _     _  __     
+| ___ \    | |   (_)/ _|    
+| |_/ /   _| |    _| |_ ___ 
+|  __/ | | | |   | |  _/ _ \\
+| |  | |_| | |___| | ||  __/
+\_|   \__, \_____/_|_| \___|
+       __/ |                
+      |___/       \n""")
+time.sleep(1)
+print("Created by DoofusDragon | V0.2")
+print("===================================\n")
+time.sleep(3)
+start = "null"
+print("[1] New Life 👶")
+print("[2] Clear Graveyard 💀")
+while start != "1":
+    start = input()
+    if start == "2":
+        clearGraveyard()
+        print("graveyard cleared")
+        print("[1] New Life 👶")
+    elif start == "1":
+        print("starting game")
+print("Choose your character's gender")
 gender = input("M or F\n")
 firstName = Player.firstName(gender)
 surnName = Player.surnName()
@@ -24,6 +50,8 @@ relationships = []
 #BIRTH SCENARIO
 scenario = "I was born " + Player.birthScenario() + " on " +birthDay
 print("My name is " +firstName + " " + surnName)
+print("My father is" + father)
+print("My mother is "+mother)
 print(scenario)
 print("====== stats ======")
 print("Health: " + str(health))
@@ -33,7 +61,7 @@ print("Happiness: " +str(happiness))
 time.sleep(1)
 deathChance = 0
 #MAIN GAMEPLAY
-print("PY LIFE 0.1\n")
+
 alive = 1
 
 age = 0
@@ -61,6 +89,7 @@ while alive == True:
         print("5. Crimes")
         print("6. Lottery")
         print("7. Gym")
+        print("8. Party")
         task = input()
         if task == "1":
             health = Activity.doctor(health)
@@ -148,6 +177,9 @@ while alive == True:
                                     inPrison = BankHeist.arrested(policeSpeed, getawayVeichle_Speed, disguise_Type)
                                     if inPrison != True:
                                         money = BankHeist.depositMoney(potentialValue, crewCut)
+                                    if inPrison != False:
+                                        sentence = BankHeist.sentence(potentialValue)
+                                        agePrison = age
                             
                             else:
                                 print("you went back on your decision")
@@ -166,14 +198,20 @@ while alive == True:
         
         if task == "7":
             health = Activity.gym(health)
+        
+        if task == "8":
+            happiness = Activity.party(happiness)
                 
         
     
     elif choice == "2":
-        #list activities
+        #CAREER
         print("CAREER")
         if age < 18:
             print("you are to young for this!")
+        
+        if inPrison:
+            print("You cannot apply for a job whilst in prison!")
 
         else:
             print("1. APPLY")
@@ -181,13 +219,19 @@ while alive == True:
             task = input("Select using number ")
             if task == "1":
                 if roleTitle == "":
-                    roleTitle = Apply.jobTitle()
-                    salary = Apply.salary(roleTitle)
+                    roleTitle_Apply = Apply.jobTitle()
+                    salary_Apply = Apply.salary(roleTitle_Apply)
                     print("JOB OPENING")
-                    print(roleTitle + "paying £"+str(salary))
+                    print(roleTitle_Apply + "paying £"+str(salary_Apply))
                     confirm = input("Do you want to apply? Y or N ")
                     if confirm.lower() == "y":
-                        successful = Apply.success(roleTitle, looks, happiness, smarts, health)
+                        successful = Apply.success(roleTitle_Apply, looks, happiness, smarts, health)
+                        if successful:
+                            roleTitle = roleTitle_Apply
+                            salary = salary_Apply
+                            print("CONGRATS: you got the job")
+                        else:
+                            print("you did not get the job")
             
                     if confirm.lower() == "n":
                         print("you did not apply in the end.")
@@ -208,7 +252,7 @@ while alive == True:
     elif choice == "4":
         #DO AGE UP STUFF
         #random events
-        print("AGEUP")
+        print("AGEUP\n")
         health = Player.ageUp_health(health)
         looks = Player.ageUp_looks(looks)
         happiness = Player.ageUp_happiness(happiness)
@@ -238,7 +282,45 @@ while alive == True:
         print("\n")
         print("AGE: " + str(age))
         alive = Player.deathRoller(deathChance, alive)
-        print(alive)
+        #print(alive)
     
 print("RIP")
+print("===== Grave =====")
+print("Name: " +firstName + " "+ surnName)
+print("Lived Until: "+str(age)+" years")
+if inPrison:
+    print("They died in custody")
+if happiness > 80:
+    print("They were a happy person")
 
+if happiness < 10:
+    print("they werent too happy")
+
+if health > 80:
+    print("they were very healthy")
+
+f = open("graveyard.txt", "a")
+f.write("===== Grave =====")
+f.write("\n")
+f.write("Name: " +firstName + " "+ surnName)
+f.write("\n")
+f.write("Lived Until: "+str(age)+" years")
+f.write("\n")
+if inPrison:
+    f.write("They died in custody")
+    f.write("\n")
+if happiness > 80:
+    f.write("They were a happy person")
+    f.write("\n")
+
+if happiness < 10:
+    f.write("they werent too happy")
+    f.write("\n")
+
+if health > 80:
+    f.write("they were very healthy")
+    f.write("\n")
+
+f.write("================================")
+f.write("\n")
+f.close()

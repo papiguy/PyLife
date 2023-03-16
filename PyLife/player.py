@@ -39,13 +39,13 @@ class Player:
     def createMother(surnName):
         motherNames = ["Sophie","Jess","Priscilla","Amy", "Chloe"]
         firstName = r.choice(motherNames)
-        mumName = firstName + surnName
+        mumName = firstName +" "+ surnName
         return mumName
     
     def createFather(surnName):
-        fatherNames = ["Sophie","Jess","Priscilla","Amy", "Chloe"]
+        fatherNames = ["John", "Hubert", "Joe", "Dave", "Lachlan", "Bill"]
         firstName = r.choice(fatherNames)
-        dadName = firstName + surnName
+        dadName = firstName +" "+ surnName
         return dadName
     
     def birthday():
@@ -189,12 +189,18 @@ class Player:
     #IN PRISON DECREASES
     def prison_happinessAgeUP(happiness):
         happiness = happiness - 2
+        if happiness < 0:
+            happiness = 0
         return happiness
     
     def prison_looksAgeUP(looks):
         looks = looks - 2
+        if looks < 0:
+            looks = 0
         return looks
     
     def prison_healthAgeUp(health):
         health = health - 3
+        if health < 0:
+            health = 0
         return health      

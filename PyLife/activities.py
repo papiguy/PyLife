@@ -119,5 +119,27 @@ class Activity:
             health = 100
         return health
     
-    
-    
+
+    def party(happiness):
+        happyActivity = ["went to a pub", "went to a night club", "went to a bar", "went to a friends home"]
+        activity = r.choice(happyActivity)
+        enjoymentScale = r.randint(1,100)
+        print("you " + activity)
+        print("you enjoyed it: " +str(enjoymentScale)+"/100")
+        if enjoymentScale < 25 and enjoymentScale > 10:
+            happiness = happiness - r.randint(1,3)
+        if enjoymentScale < 10:
+            happiness = happiness - r.randint(1,3)
+        if enjoymentScale > 25 and enjoymentScale < 75:
+            happiness = happiness + r.randint(1,5)
+        if enjoymentScale > 75 and enjoymentScale < 90:
+            happiness = happiness + r.randint(3,10)
+        else:
+            happiness = happiness + r.randint(5,15)
+        
+        if happiness > 100:
+            happiness = 100
+        if happiness < 0:
+            happiness = 0
+        
+        return happiness

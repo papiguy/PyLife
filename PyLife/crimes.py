@@ -59,16 +59,16 @@ class BankHeist:
                 return crewCount
     def crewCut(crewCount):
         if crewCount > 0:
-            cut = input("How much of the final cut should each crew memebr recieve (%)")
+            cut = input("How much of the final cut should each crew memebr recieve (%) ")
             cut = float(cut)
             cut = cut / 100
+            cut = float(cut)
         else:
             cut = 0.0
-            return cut
+        return cut
 
         
     def tools(crewCount):
-        print("each crew member should have one")
         if crewCount == 0:
             crewCount = crewCount +1
         toolCost = r.randint(1000,25000)
@@ -195,7 +195,7 @@ class BankHeist:
         
         return sentence
     
-    def depositMoney(value,crewCut):
+    def depositMoney(value, crewCut):
         finalCrewCut = crewCut * value
         playerTake = value - finalCrewCut
         print("===== HEIST RESULTS =====")
@@ -203,3 +203,48 @@ class BankHeist:
         print("CREW CUT: "+str(crewCut*100)+"%")
         print("YOUR TAKE: £"+str(playerTake))
         return playerTake
+
+class HitmanHire:
+    def targetList():
+        namedTargets = ["Boris","Vinny", "Bob","satine", "John"]
+        roledTargets = ["Youtuber","police","GameDev", "Web Dev", "Random Nerd"]
+        potentialTarget1 = r.choice(namedTargets)
+        potentialTarget2 = r.choice(roledTargets)
+
+        print("You are thinking of hiring a hitman to take out: "+potentialTarget1 + " OR a "+ potentialTarget2)
+        selectedTarget = input("Who will you take care of? 1 OR 2\n")
+        if selectedTarget == "1":
+            return potentialTarget1
+        else:
+            return potentialTarget2
+        
+    def price():
+        price = r.randint(100000,500000)
+        return price
+    
+    def reliability():
+        reliability = r.randint(1,100) # basically this will help with success roles, if lower than value = success
+        return reliability
+    
+    def success(reliability):
+        successRoll = r.randint(1,100)
+        if successRoll <= reliability:
+            success = True
+        else:
+            success = False
+        return success
+
+    def scammer(success):
+        if success:
+            inPrison = False
+
+            print("The hitman carried out the work")
+        else:
+            chance = r.randint(1,5)
+            if chance == 1:
+                inPrison = True
+                print("The hitman reported you to the authorities")
+            else:
+                inPrison = False
+            
+        return inPrison

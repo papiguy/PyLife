@@ -7,6 +7,8 @@ from crimes import *
 from careers import *
 from clearsave import *
 #from assets import *
+from npc import *
+from prison import *
 
 #create player
 print("===================================\n")
@@ -90,6 +92,8 @@ while alive == True:
         print("6. Lottery")
         print("7. Gym")
         print("8. Party")
+        if inPrison:
+            print("I. Prison")
         task = input()
         if task == "1":
             health = Activity.doctor(health)
@@ -127,6 +131,7 @@ while alive == True:
                     print("===== crimes =====")
                     print("1. robbery")
                     print("2. bank heist")
+                    print("3. Hire a Hitman")
                     #etc
                     #etc
                     crime = input("Which one do you want to commit? ENTER NUMBER\n")
@@ -176,6 +181,8 @@ while alive == True:
                                     policeSpeed = BankHeist.policeSpeed()
                                     inPrison = BankHeist.arrested(policeSpeed, getawayVeichle_Speed, disguise_Type)
                                     if inPrison != True:
+                                        potentialValue = float(potentialValue)
+                                        crewCut = float(crewCut)
                                         money = BankHeist.depositMoney(potentialValue, crewCut)
                                     if inPrison != False:
                                         sentence = BankHeist.sentence(potentialValue)
@@ -186,7 +193,19 @@ while alive == True:
                         
                         else:
                             print("you went back on your choice.")
-                
+
+                    elif crime == "3":
+                        target = HitmanHire.targetList()
+                        price = HitmanHire.price()
+                        reliability = HitmanHire.reliability()
+                        success = HitmanHire.success(reliability)
+                        print("The hitman charges you: £"+str(price))
+                        confirm = input("Do you want to do this? Y OR N \n")
+                        if confirm.lower() == "y":
+                            inPrison = HitmanHire.scammer(success)
+                        else:
+                            print("you went back on your weird thoughts...")
+
         if age <= 18 and task == "4":
             print("YOU ARE TOO YOUNG FOR THIS!!!")
         
@@ -201,6 +220,18 @@ while alive == True:
         
         if task == "8":
             happiness = Activity.party(happiness)
+        
+        if task.upper() == "I" and inPrison == True:
+            print("===== PRISON =====")
+            print("1. Escape")
+            print("2. Riot (SOON)")
+            select = input("Choose Number")
+            if select == "1":
+                inPrison = Escape.BlackJack() #will soon have several different ways that will be randomly selected
+            
+            #if 2...
+            else:
+                print("INVALID")
                 
         
     

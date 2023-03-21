@@ -203,4 +203,9 @@ class Player:
         health = health - 3
         if health < 0:
             health = 0
-        return health      
+        return health
+
+
+class Relationships:
+    #this class will interact directly with NPCs
+    relationships = []

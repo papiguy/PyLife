@@ -1,4 +1,3 @@
-from cmath import cos
 import random as r
 import time
 

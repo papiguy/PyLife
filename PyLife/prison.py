@@ -44,6 +44,7 @@ class Escape:
                         turn = False
                 
             elif move.lower() == "s":
+                turn = True
                 while value_AI < 21 and play == True and turn == True:
                     print("THE OPPONANT HITS")
                     value_AI = value_AI + r.randint(1,12)
@@ -59,7 +60,7 @@ class Escape:
                         turn = False
                         play = False
                     else:
-                        turn = False
+                        turn = True
         return inPrison
 
 

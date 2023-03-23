@@ -6,7 +6,7 @@ from activities import *
 from crimes import *
 from careers import *
 from clearsave import *
-#from assets import *
+from assets import *
 from npc import *
 from prison import *
 
@@ -21,7 +21,7 @@ print("""______      _     _  __
        __/ |                
       |___/       \n""")
 time.sleep(1)
-print("Created by DoofusDragon | V0.2")
+print("Created by DoofusDragon | V0.2.5")
 print("===================================\n")
 time.sleep(3)
 start = "null"
@@ -71,6 +71,7 @@ money = 0 #CHANGE THIS BACK TO 0 THIS IS A TEST VALUE
 inPrison = False
 agePrison = 0
 sentence = 0
+onMortgage = False
 
 #CAREER STATS
 roleTitle = ""
@@ -79,7 +80,7 @@ while alive == True:
     print("choose an option")
     print("1. activity")
     print("2. career")
-    print("3. relationships (COMING SOON)")
+    print("3. assets")
     print("4. AGE UP")
     choice = input()
     if choice == "1":
@@ -224,7 +225,8 @@ while alive == True:
         if task.upper() == "I" and inPrison == True:
             print("===== PRISON =====")
             print("1. Escape")
-            print("2. Riot (SOON)")
+            print("2. Riot")
+            print("3. Pay to bail")
             select = input("Choose Number")
             if select == "1":
                 inPrison = Escape.BlackJack() #will soon have several different ways that will be randomly selected
@@ -236,6 +238,20 @@ while alive == True:
                 guardNPC_health = Riot.guardNPC_Health()
                 guardNPC_smarts = Riot.guardNPC_Smarts()
                 inPrison = Riot.fight(inmateNPC_health, inmateNPC_smarts, guardNPC_health, guardNPC_smarts)
+            
+            elif select == "3":
+                bailFee = Bail.fee(sentence)
+                print(f"BAIL FEE: £{bailFee}")
+                confirm = input("DO YOU WANT TO PAY THIS (Y OR N)\n")
+                if confirm.upper() == "Y" and money >= bailFee:
+                    print("YOU ARE FREE")
+                    inPrison = False
+                
+                if confirm.upper() == "Y" and money <= bailFee:
+                    print("you cannot afford this")
+
+                if confirm.upper() == "N":
+                    print("You did not pay the fee")
             else:
                 print("INVALID")
                 
@@ -283,8 +299,37 @@ while alive == True:
                     print("You cant quit as you have no job")
     
     elif choice == "3":
-        #list relations
-        print("RELATION")
+        print("===== ASSETS =====")
+        print("1. Purchase Home")
+        print("2. Purchase Car (SOON)")
+        print("3. Sell Home (SOON)")
+        print("4. Sell Car (SOON)")
+        select = input("Select using a corresponding number")
+        if select == "1":
+            houseType = Home.type()
+            housePrice = Home.price(houseType)
+            print("===HOUSE FOR SALE===")
+            print(houseType +"for £"+str(housePrice)+"\n")
+            print("=== PURCHASE OPTIONS ===")
+            print("M. Mortgage")
+            print("P. Purchase with cash")
+            print("C. Cancel purchase")
+            select = input("select an option\n")
+            if select.lower() == "m":
+                deposit = Home.mortgage(money, housePrice)
+                toPay = Home.mortgageOutstanding(deposit, housePrice)
+                paymentValue = Home.mortgagePayment_Setup(money, toPay)
+                money = Home.mortgagePayment(paymentValue, money)
+                print("Mortgage taken success!")
+                onMortgage = True
+            
+            elif select.lower() == "p":
+                if money >= housePrice:
+                    money = Home.purchaseOutright(money, housePrice)
+                else:
+                    print("You cannot purchase")
+                    print("PURCHASE CANCELLED BY DEFAULT...")
+
     
     elif choice == "4":
         #DO AGE UP STUFF
@@ -303,6 +348,16 @@ while alive == True:
             looks = Player.prison_looksAgeUP(looks)
             roleTitle = Quit.jobRole(roleTitle)
             salary = Quit.salary(salary)
+        
+        if onMortgage == True:
+            toPay = Home.mortgagePayment_Outstanding(paymentValue, toPay)
+            #paymentValue = Home.mortgagePayment_Setup(money, toPay)
+            money = Home.mortgagePayment(paymentValue, money)
+            toPay = round(toPay,2)
+            print(f"£{toPay}left on mortgage")
+            if toPay <= 0:
+                onMortgage = False
+
         
         money = money + Tax.income(salary)
         money = round(money, 2)

@@ -134,7 +134,17 @@ class Riot:
         if guardPoints > inmatePoints:
             print("you were all beaten")
             inPrison = True
-        else:
+            
+        if guardPoints == inmatePoints:
+
             inPrison = True
             print("You were all evenly matched - nothing happened")
         return inPrison
+    
+
+class Bail:
+    def fee(sentence):
+        bailFee = 0
+        for i in range(1,sentence):
+            bailFee = bailFee + 1000
+        return bailFee

@@ -229,7 +229,13 @@ while alive == True:
             if select == "1":
                 inPrison = Escape.BlackJack() #will soon have several different ways that will be randomly selected
             
-            #if 2...
+            elif select == "2":
+                Riot.rally()
+                inmateNPC_health = Riot.inmateNPC_Health()
+                inmateNPC_smarts = Riot.inmateNPC_Smarts()
+                guardNPC_health = Riot.guardNPC_Health()
+                guardNPC_smarts = Riot.guardNPC_Smarts()
+                inPrison = Riot.fight(inmateNPC_health, inmateNPC_smarts, guardNPC_health, guardNPC_smarts)
             else:
                 print("INVALID")
                 

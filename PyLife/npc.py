@@ -2,6 +2,7 @@ import random as r
 import time
 
 class NPC:
+
     def smarts():
         smarts = r.randint(1,100)
         return smarts
@@ -24,9 +25,9 @@ class NPC:
 
     def money():
         money = r.randint(1,100)
-        return 
+        return money
         
-    def generosity(happiness):
+    def generosity():
         generosity = r.randint(1,100)
         return generosity
 

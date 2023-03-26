@@ -71,7 +71,12 @@ money = 0 #CHANGE THIS BACK TO 0 THIS IS A TEST VALUE
 inPrison = False
 agePrison = 0
 sentence = 0
+#asset stats
 onMortgage = False
+#array1 is names array 2 is values
+ownedAssets = []
+assetValues = []
+netWorth = 0.00
 
 #CAREER STATS
 roleTitle = ""
@@ -322,6 +327,9 @@ while alive == True:
                 money = Home.mortgagePayment(paymentValue, money)
                 print("Mortgage taken success!")
                 onMortgage = True
+                ownedAssets.append(houseType)
+                assetValues.append(housePrice)
+                netWorth = netWorth + housePrice
             
             elif select.lower() == "p":
                 if money >= housePrice:
@@ -377,6 +385,7 @@ while alive == True:
         #print(alive)
     
 print("RIP")
+netWorth = netWorth + money 
 print("===== Grave =====")
 print("Name: " +firstName + " "+ surnName)
 print("Lived Until: "+str(age)+" years")

@@ -46,6 +46,12 @@ while start != "1":
         print("[2] Clear Graveyard 💀")
 print("Choose your character's gender")
 gender = input("M or F\n")
+isCustom = input("Custom name? Y or N\n")
+if isCustom.lower() == "y":
+    firstName = input("Enter your characters first name: ")
+    firstName = firstName.capitalize()
+    surnName = input("Enter your characters last name: ")
+    surnName = surnName.capitalize()
 clear()
 print("===================================\n")
 print("""______      _     _  __     
@@ -59,8 +65,9 @@ print("""______      _     _  __
 time.sleep(1)
 print("Created by DoofusDragon | V0.3")
 print("===================================\n")
-firstName = Player.firstName(gender)
-surnName = Player.surnName()
+if isCustom.lower() != "y":
+    firstName = Player.firstName(gender)
+    surnName = Player.surnName()
 health = Player.health()
 happiness = Player.happiness()
 looks = Player.looks()
@@ -74,7 +81,7 @@ relationships = []
 #BIRTH SCENARIO
 scenario = "I was born " + Player.birthScenario() + " on " +birthDay
 print("My name is " +firstName + " " + surnName)
-print("My father is" + father)
+print("My father is " + father)
 print("My mother is "+mother)
 print(scenario)
 #print("====== stats ======")

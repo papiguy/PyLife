@@ -22,28 +22,28 @@ class Player:
     #players Name
     def firstName(gender):
         if gender.upper() == "M":
-            maleNames = ["John", "Hubert", "Joe", "Dave", "Lachlan", "Bill"]
+            maleNames = ["John", "Hubert", "Joe", "Dave", "Lachlan", "Bill", "Ryan","Josh", "Sam", "Joeseph", "Grant", "Eean"]
             name = r.choice(maleNames)
 
         if gender.upper() == "F":
-            femaleNames = ["Sophie","Jess","Priscilla","Amy", "Chloe"]
+            femaleNames = ["Sophie","Jess","Priscilla","Amy", "Chloe","Layla", "Laura", "Sharron", "Hannah","Emily"]
             name= r.choice(femaleNames)
             
         return name
     
     def surnName():
-        surnNames = ["Boadi", "Omoregie", "Wisneieski", "Johnson", "Dumb", "McDonald", "Power"]
+        surnNames = ["Boadi", "Omoregie", "Wisneieski", "Johnson", "Dumb", "McDonald", "Power","Alken", "Middleton", "Small", "Big", "Loiken"]
         lastName = r.choice(surnNames)
         return lastName
     #players Family
     def createMother(surnName):
-        motherNames = ["Sophie","Jess","Priscilla","Amy", "Chloe"]
+        motherNames = ["Sophie","Jess","Priscilla","Amy", "Chloe", "Josie", "Sophia", "Charlotte", "Emily"]
         firstName = r.choice(motherNames)
         mumName = firstName +" "+ surnName
         return mumName
     
     def createFather(surnName):
-        fatherNames = ["John", "Hubert", "Joe", "Dave", "Lachlan", "Bill"]
+        fatherNames = ["John", "Hubert", "Joe", "Dave", "Lachlan", "Bill", "Shaun"]
         firstName = r.choice(fatherNames)
         dadName = firstName +" "+ surnName
         return dadName

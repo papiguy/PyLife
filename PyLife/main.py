@@ -9,7 +9,9 @@ from clearsave import *
 from assets import *
 from npc import *
 from prison import *
-
+from os import system
+def clear():
+    system("cls")
 #create player
 print("===================================\n")
 print("""______      _     _  __     
@@ -21,12 +23,13 @@ print("""______      _     _  __
        __/ |                
       |___/       \n""")
 time.sleep(1)
-print("Created by DoofusDragon | V0.2.5")
+print("Created by DoofusDragon | V0.3")
 print("===================================\n")
 time.sleep(3)
 start = "null"
 print("[1] New Life 👶")
 print("[2] Clear Graveyard 💀")
+print("[3] Show Graveyard")
 while start != "1":
     start = input()
     if start == "2":
@@ -35,8 +38,27 @@ while start != "1":
         print("[1] New Life 👶")
     elif start == "1":
         print("starting game")
+    elif start == "3":
+        f = open("graveyard.txt","r")
+        print(f.read())
+        f.close()
+        print("[1] New Life 👶")
+        print("[2] Clear Graveyard 💀")
 print("Choose your character's gender")
 gender = input("M or F\n")
+clear()
+print("===================================\n")
+print("""______      _     _  __     
+| ___ \    | |   (_)/ _|    
+| |_/ /   _| |    _| |_ ___ 
+|  __/ | | | |   | |  _/ _ \\
+| |  | |_| | |___| | ||  __/
+\_|   \__, \_____/_|_| \___|
+       __/ |                
+      |___/       \n""")
+time.sleep(1)
+print("Created by DoofusDragon | V0.3")
+print("===================================\n")
 firstName = Player.firstName(gender)
 surnName = Player.surnName()
 health = Player.health()
@@ -55,11 +77,11 @@ print("My name is " +firstName + " " + surnName)
 print("My father is" + father)
 print("My mother is "+mother)
 print(scenario)
-print("====== stats ======")
-print("Health: " + str(health))
-print("Looks; " + str(looks))
-print("Smarts:" + str(smarts))
-print("Happiness: " +str(happiness))
+#print("====== stats ======")
+#print("Health: " + str(health))
+#print("Looks; " + str(looks))
+#print("Smarts:" + str(smarts))
+#print("Happiness: " +str(happiness))
 time.sleep(1)
 deathChance = 0
 #MAIN GAMEPLAY
@@ -73,15 +95,33 @@ agePrison = 0
 sentence = 0
 #asset stats
 onMortgage = False
+onCarLoan = False
 #array1 is names array 2 is values
 ownedAssets = []
 assetValues = []
+ownedAssets_Car = []
+assetValues_Car = []
 netWorth = 0.00
 
 #CAREER STATS
 roleTitle = ""
 salary = 0.00
 while alive == True:
+    print("\n")
+    #clear()
+    print(f"AGE:{age}")
+    print("====== stats ======")
+    print("Health: " + str(health))
+    print("Looks; " + str(looks))
+    print("Smarts:" + str(smarts))
+    print("Happiness: " + str(happiness))
+    print("DeathChance: " + str(deathChance))
+    print("InPrison: " +str(inPrison))
+    print("\n")
+    money = round(money,2)
+    print("£"+str(money))
+
+
     print("choose an option")
     print("1. activity")
     print("2. career")
@@ -103,13 +143,11 @@ while alive == True:
         task = input()
         if task == "1":
             health = Activity.doctor(health)
-            print("Health: " + str(health))
         if task == "2":
             happiness = Activity.happytimes(happiness)
-            print("happiness: " +str(happiness))
+
         if task == "3":
             smarts = Activity.school(smarts)
-            print("Smarts: " + str(smarts))
         if age >= 18:
             if task == "4":
                 print("plastic surgery")
@@ -132,7 +170,6 @@ while alive == True:
             if task == "5":
                 if inPrison == True:
                     print("you cannot commit crimes while in prison")
-                
                 else:
                     print("===== crimes =====")
                     print("1. robbery")
@@ -268,7 +305,7 @@ while alive == True:
         if age < 18:
             print("you are to young for this!")
         
-        if inPrison:
+        elif inPrison:
             print("You cannot apply for a job whilst in prison!")
 
         else:
@@ -304,45 +341,166 @@ while alive == True:
                     print("You cant quit as you have no job")
     
     elif choice == "3":
-        print("===== ASSETS =====")
-        print("1. Purchase Home")
-        print("2. Purchase Car (SOON)")
-        print("3. Sell Home (SOON)")
-        print("4. Sell Car (SOON)")
-        select = input("Select using a corresponding number")
-        if select == "1":
-            houseType = Home.type()
-            housePrice = Home.price(houseType)
-            print("===HOUSE FOR SALE===")
-            print(houseType +"for £"+str(housePrice)+"\n")
-            print("=== PURCHASE OPTIONS ===")
-            print("M. Mortgage")
-            print("P. Purchase with cash")
-            print("C. Cancel purchase")
-            select = input("select an option\n")
-            if select.lower() == "m":
-                deposit = Home.mortgage(money, housePrice)
-                toPay = Home.mortgageOutstanding(deposit, housePrice)
-                paymentValue = Home.mortgagePayment_Setup(money, toPay)
-                money = Home.mortgagePayment(paymentValue, money)
-                print("Mortgage taken success!")
-                onMortgage = True
-                ownedAssets.append(houseType)
-                assetValues.append(housePrice)
-                netWorth = netWorth + housePrice
-            
-            elif select.lower() == "p":
-                if money >= housePrice:
-                    money = Home.purchaseOutright(money, housePrice)
+        if age < 18:
+            print("you are too young for this!")
+        else:
+            print("===== ASSETS =====")
+            print("1. Purchase Home")
+            print("2. Purchase Car")
+            print("3. Sell House")
+            print("4. Sell Car")
+            if onMortgage:
+                print("M. Pay off Mortgage")
+            select = input("Select using a corresponding number\n")
+            if select == "1":
+                houseType = Home.type()
+                housePrice = Home.price(houseType)
+                if onMortgage:
+                    print("You cannot buy another house whilst a mortgage is active!")
                 else:
-                    print("You cannot purchase")
-                    print("PURCHASE CANCELLED BY DEFAULT...")
+                    print("===HOUSE FOR SALE===")
+                    print(houseType +"for £"+str(housePrice)+"\n")
+                    print("=== PURCHASE OPTIONS ===")
+                    print("M. Mortgage")
+                    print("P. Purchase with cash")
+                    print("C. Cancel purchase")
+                    select = input("select an option\n")
+                    if select.lower() == "m":
+                        deposit = Home.mortgage(money, housePrice)
+                        toPay = Home.mortgageOutstanding(deposit, housePrice)
+                        paymentValue = Home.mortgagePayment_Setup(money, toPay)
+                        money = Home.mortgagePayment(paymentValue, money)
+                        print("Mortgage taken success!")
+                        onMortgage = True
+                        ownedAssets.append(houseType)
+                        assetValues.append(housePrice)
+                        netWorth = netWorth + housePrice
+            
+                    elif select.lower() == "p":
+                        if money >= housePrice:
+                            money = Home.purchaseOutright(money, housePrice)
+                            ownedAssets.append(houseType)
+                            assetValues.append(housePrice)
+                            netWorth = netWorth + housePrice
+
+                        else:
+                            print("You cannot purchase")
+                            print("PURCHASE CANCELLED BY DEFAULT...")
+                    elif select.lower() =="c":
+                        print("Purchase cancelled")
+
+                    else:
+                        print("INVALID INPUT")
+            elif select == "2":
+                carType = Car.type()
+                carModel = Car.model(carType)
+                carPrice = Car.price(carType)
+                carName = carType + " "+carModel
+                print("===== CAR FOR SALE =====")
+                print(carType +" "+ carModel + " for: £"+str(carPrice))
+                print("===== PURCHASE OPTIONS =====")
+                print("P. Purchase with cash")
+                print("L. Car Loan")
+                print("C. Cancel Purchase")
+                select = input("Select an option\n")
+                if select.lower() == "p":
+                    if money >= carPrice:
+                        print("Purchased!")
+                        ownedAssets_Car.append(carName)
+                        assetValues_Car.append(carPrice)
+                    
+                    else:
+                        print("sorry you do not have enough for this! - PURCHASE CANCELLED")
+
+                elif select.lower() == "l":
+                    deposit = Car.loan(money)
+                    toPay_Car = Car.loanOutstanding(deposit, carPrice)
+                    paymentValue = Car.loanPayment_Setup(money, toPay_Car)
+                    money = Car.loanPayment(paymentValue, money)
+                    print("Car Loan taken success!")
+                    onCarLoan = True
+                    ownedAssets_Car.append(carName)
+                    assetValues_Car.append(carPrice)
+                    netWorth = netWorth + carPrice
+
+                else:
+                    print("INVALID/COMING SOON")
+
+            elif select == "3":
+                if onMortgage != True:
+                    print(f"CURRENT OWNED ASSETS: {ownedAssets}")
+                    sell = input("CHOOSE THE NUMBER THAT CORRESPONDS TO THE ASSET! Or C to cancel\n")
+                    if sell.lower() == "c":
+                        print("cancelled")
+
+                    else:
+                        sell = int(sell)
+                        correspondingAsset = ownedAssets[sell-1]
+                        correspondingAsset_value = assetValues[sell-1]
+                        price = correspondingAsset_value + r.randint(100000,500000)
+                        print(f"SELLING ASSET FOR: £{price}")
+                        confirm = input("ARE YOU SURE YOU WANT TO SELL? (Y or N)\n")
+                        if confirm.lower() == "y":
+                            print("SOLD")
+                            del ownedAssets[sell - 1]
+                            del assetValues[sell - 1]
+                            netWorth = netWorth - correspondingAsset_value
+                            money = money + price
+                            print(f"NEW funds: £{money}")
+                
+                else:
+                    print("YOU CANNOT SELL AN ASSET WHILST A MORTGAGE IS ACTIVE")
+            
+            elif select == "4":
+                if onCarLoan != True:
+                    print(f"CURRENT OWNED ASSETS: {ownedAssets_Car}")
+                    sell = input("CHOOSE THE NUMBER THAT CORRESPONDS TO THE ASSET! Or C to cancel\n")
+                    if sell.lower() == "c":
+                        print("cancelled")
+
+                    else:
+                        sell = int(sell)
+                        correspondingAsset = ownedAssets_Car[sell-1]
+                        correspondingAsset_value = assetValues_Car[sell-1]
+                        price = correspondingAsset_value + r.randint(100000,500000)
+                        print(f"SELLING ASSET FOR: £{price}")
+                        confirm = input("ARE YOU SURE YOU WANT TO SELL? (Y or N)\n")
+                        if confirm.lower() == "y":
+                            print("SOLD")
+                            del ownedAssets[sell - 1]
+                            del assetValues[sell - 1]
+                            netWorth = netWorth - correspondingAsset_value
+                            money = money + price
+                            print(f"NEW funds: £{money}")
+                
+                else:
+                    print("YOU CANNOT SELL AN ASSET WHILST A MORTGAGE IS ACTIVE")
+
+            elif select.lower() == "m" and onMortgage:
+                confirm = input("Are you sure? Y or N\n")
+                if confirm.lower() == "y" and money >= toPay:
+                    money = money - toPay
+                    print("SUCCESSFULLY PAID OFF MORTGAGE")
+                    onMortgage = False
+                
+                elif confirm.lower() == "y" and money < toPay:
+                    print("YOU DON'T HAVE ENOUGH MONEY!")
+                
+                elif confirm.lower() == "n":
+                    print("cancelled...")
+
+                else:
+                    print("Invalid!")
+            else:
+                print("INVALID CHOICE / COMING SOON")
 
     
     elif choice == "4":
         #DO AGE UP STUFF
         #random events
         print("AGEUP\n")
+        clear()
+
         health = Player.ageUp_health(health)
         looks = Player.ageUp_looks(looks)
         happiness = Player.ageUp_happiness(happiness)
@@ -365,27 +523,26 @@ while alive == True:
             print(f"£{toPay}left on mortgage")
             if toPay <= 0:
                 onMortgage = False
+        
+        if onCarLoan == True:
+            toPay_Car = Car.loanPayment_Outstanding(paymentValue, toPay_Car)
+            #paymentValue = Home.mortgagePayment_Setup(money, toPay)
+            money = Car.loanPayment(paymentValue, money)
+            toPay_Car = round(toPay_Car,2)
+            print(f"£{toPay_Car}left on loan")
+            if toPay_Car <= 0:
+                onCarLoan = False
 
         
         money = money + Tax.income(salary)
         money = round(money, 2)
-        print("====== stats ======")
-        print("Health: " + str(health))
-        print("Looks; " + str(looks))
-        print("Smarts:" + str(smarts))
-        print("Happiness: " + str(happiness))
-        print("DeathChance: " + str(deathChance))
-        print("InPrison: " +str(inPrison))
-        print("\n")
-        print("£"+str(money))
         age = age +1
         print("\n")
-        print("AGE: " + str(age))
+        #print("AGE: " + str(age))
         alive = Player.deathRoller(deathChance, alive)
-        #print(alive)
     
 print("RIP")
-netWorth = netWorth + money 
+netWorth = money + netWorth 
 print("===== Grave =====")
 print("Name: " +firstName + " "+ surnName)
 print("Lived Until: "+str(age)+" years")
@@ -399,6 +556,8 @@ if happiness < 10:
 
 if health > 80:
     print("they were very healthy")
+
+print(f"NETWORTH:£{netWorth}")
 
 f = open("graveyard.txt", "a")
 f.write("===== Grave =====")
@@ -421,7 +580,8 @@ if happiness < 10:
 if health > 80:
     f.write("they were very healthy")
     f.write("\n")
-
+f.write(f"NETWORTH: £{netWorth}")
+f.write("\n")
 f.write("================================")
 f.write("\n")
 f.close()

@@ -9,6 +9,7 @@ from clearsave import *
 from assets import *
 from npc import *
 from prison import *
+from relationships import *
 from os import system
 def clear():
     system("cls")
@@ -23,13 +24,14 @@ print("""______      _     _  __
        __/ |                
       |___/       \n""")
 time.sleep(1)
-print("Created by DoofusDragon | V0.3")
+print("Created by DoofusDragon | V0.5.0")
 print("===================================\n")
 time.sleep(3)
 start = "null"
 print("[1] New Life 👶")
 print("[2] Clear Graveyard 💀")
 print("[3] Show Graveyard")
+print("[4] Show Patch notes")
 while start != "1":
     start = input()
     if start == "2":
@@ -44,6 +46,14 @@ while start != "1":
         f.close()
         print("[1] New Life 👶")
         print("[2] Clear Graveyard 💀")
+    elif start == "4":
+        patch = open("patchnotes.txt","r")
+        print(patch.read())
+        patch.close()
+        print("\n")
+        print("[1] New Life 👶")
+        print("[2] Clear Graveyard 💀")
+        print("[3] Show graveyard")
 print("Choose your character's gender")
 gender = input("M or F\n")
 isCustom = input("Custom name? Y or N\n")
@@ -63,7 +73,7 @@ print("""______      _     _  __
        __/ |                
       |___/       \n""")
 time.sleep(1)
-print("Created by DoofusDragon | V0.3")
+print("Created by DoofusDragon | V0.5")
 print("===================================\n")
 if isCustom.lower() != "y":
     firstName = Player.firstName(gender)
@@ -73,11 +83,16 @@ happiness = Player.happiness()
 looks = Player.looks()
 smarts = Player.smarts()
 #parents
-father = Player.createFather(surnName)
-mother = Player.createMother(surnName)
+father = Player.createFather(surnName, firstName)
+mother = Player.createMother(surnName, firstName)
 birthDay = Player.birthday()
 #RELATIONSHIPS
-relationships = []
+relationships_Romantic = []
+likeness_Romantic = []
+relationships_Friend = []
+likeness_Friend = []
+children = []
+childrenAge = []
 #BIRTH SCENARIO
 scenario = "I was born " + Player.birthScenario() + " on " +birthDay
 print("My name is " +firstName + " " + surnName)
@@ -130,23 +145,24 @@ while alive == True:
 
 
     print("choose an option")
-    print("1. activity")
-    print("2. career")
-    print("3. assets")
-    print("4. AGE UP")
+    print("[1] activity")
+    print("[2] career")
+    print("[3] assets")
+    print("[4] Relationships")
+    print("[5] AGE UP")
     choice = input()
     if choice == "1":
         print("===== ACTIVITIES =====")
-        print("1. doctor")
-        print("2. have some 'happy' times")
-        print("3. Go to school")
-        print("4. Plastic surgery")
-        print("5. Crimes")
-        print("6. Lottery")
-        print("7. Gym")
-        print("8. Party")
+        print("[1] doctor")
+        print("[2] happy times")
+        print("[3] Go to school")
+        print("[4] Plastic surgery")
+        print("[5] Crimes")
+        print("[6] Lottery")
+        print("[7] Gym")
+        print("[8] Party")
         if inPrison:
-            print("I. Prison")
+            print("[I] Prison")
         task = input()
         if task == "1":
             health = Activity.doctor(health)
@@ -179,9 +195,9 @@ while alive == True:
                     print("you cannot commit crimes while in prison")
                 else:
                     print("===== crimes =====")
-                    print("1. robbery")
-                    print("2. bank heist")
-                    print("3. Hire a Hitman")
+                    print("[1] robbery")
+                    print("[2] bank heist")
+                    print("[3] Hire a Hitman")
                     #etc
                     #etc
                     crime = input("Which one do you want to commit? ENTER NUMBER\n")
@@ -273,9 +289,9 @@ while alive == True:
         
         if task.upper() == "I" and inPrison == True:
             print("===== PRISON =====")
-            print("1. Escape")
-            print("2. Riot")
-            print("3. Pay to bail")
+            print("[1] Escape")
+            print("[2] Riot")
+            print("[3] Pay to bail")
             select = input("Choose Number")
             if select == "1":
                 inPrison = Escape.BlackJack() #will soon have several different ways that will be randomly selected
@@ -316,8 +332,8 @@ while alive == True:
             print("You cannot apply for a job whilst in prison!")
 
         else:
-            print("1. APPLY")
-            print("2. QUIT")
+            print("[1] APPLY")
+            print("[2] QUIT")
             task = input("Select using number ")
             if task == "1":
                 if roleTitle == "":
@@ -352,10 +368,10 @@ while alive == True:
             print("you are too young for this!")
         else:
             print("===== ASSETS =====")
-            print("1. Purchase Home")
-            print("2. Purchase Car")
-            print("3. Sell House")
-            print("4. Sell Car")
+            print("[1] Purchase Home")
+            print("[2] Purchase Car")
+            print("[3] Sell House")
+            print("[4] Sell Car")
             if onMortgage:
                 print("M. Pay off Mortgage")
             select = input("Select using a corresponding number\n")
@@ -368,9 +384,9 @@ while alive == True:
                     print("===HOUSE FOR SALE===")
                     print(houseType +"for £"+str(housePrice)+"\n")
                     print("=== PURCHASE OPTIONS ===")
-                    print("M. Mortgage")
-                    print("P. Purchase with cash")
-                    print("C. Cancel purchase")
+                    print("[M] Mortgage")
+                    print("[P] Purchase with cash")
+                    print("[C] Cancel purchase")
                     select = input("select an option\n")
                     if select.lower() == "m":
                         deposit = Home.mortgage(money, housePrice)
@@ -406,9 +422,9 @@ while alive == True:
                 print("===== CAR FOR SALE =====")
                 print(carType +" "+ carModel + " for: £"+str(carPrice))
                 print("===== PURCHASE OPTIONS =====")
-                print("P. Purchase with cash")
-                print("L. Car Loan")
-                print("C. Cancel Purchase")
+                print("[P] Purchase with cash")
+                print("[L] Car Loan")
+                print("[C] Cancel Purchase")
                 select = input("Select an option\n")
                 if select.lower() == "p":
                     if money >= carPrice:
@@ -500,9 +516,152 @@ while alive == True:
                     print("Invalid!")
             else:
                 print("INVALID CHOICE / COMING SOON")
-
-    
+#FRIENDS!!!!!
     elif choice == "4":
+        print("[1] Find Friends")
+        print("[2] Date (SOON)")
+        print("[3] Relationship Activities (BETA)")
+        print("[4] View Relationships (BETA)")
+        print("[5] End a relationship (SOON)")
+        select = input("Select a number\n")
+        if select == "1":
+            print("===== potential friend =====")
+            friendGender = Friend.gender()
+            friendAge = Friend.age(age)
+            friendName = Friend.name(friendGender)
+            print(f"Name: {friendName}")
+            print(f"Age: {friendAge}")
+            Friend.makeStats()
+            friendAdd = input(f"Do you want {friendName} to be your friend? Y or N\n")
+            if friendAdd.lower() == "y":
+                added = Friend.meetPlayer(looks, smarts)
+                if added:
+                    likeness = Friend.initialLikeness(happiness, looks, smarts)
+                    print("You have a new friend")
+                    relationships_Friend.append(friendName)
+                    likeness_Friend.append(likeness)
+                
+                else:
+                    print(f"{friendName} did not want to become your friend!")
+            else:
+                print(f"You did not want to become {friendName}'s friend")
+        elif select == "2":
+            #make new framework for a romantic relationship in pylife
+            print("===== potential friend =====")
+            friendGender = Friend_Romantic.gender()
+            friendAge = Friend_Romantic.age(age)
+            friendName = Friend_Romantic.name(friendGender)
+            print(f"Name: {friendName}")
+            print(f"Age: {friendAge}")
+            Friend_Romantic.makeStats()
+            friendAdd = input(f"Do you want {friendName} to be your friend? Y or N\n")
+            if friendAdd.lower() == "y":
+                added = Friend.meetPlayer(looks, smarts)
+                if added:
+                    likeness = Friend_Romantic.initialLikeness(happiness, looks, smarts)
+                    print("You have a new friend")
+                    relationships_Romantic.append(friendName)
+                    likeness_Romantic.append(likeness)
+                else:
+                    print(f"{friendName} does not want to go out with you")
+            else:
+                print(f"You did not want to go out with {friendName}")    
+
+        elif select == "3":
+            print("NOTE SOME OF THESE MAY NOT WORK YET")
+            print("==== Friend Activities ====")
+            if len(relationships_Friend) <1:
+                print("LOCKED 🔒")
+            else:
+                print("[1] Spend time with")
+                print("[2] Ask out")
+                print("[3] Compliment")
+            print("==== Romantic Friend Activities ====")
+            if len(relationships_Romantic)<1:
+                print("LOCKED 🔒")
+            else:
+                print("[4] spend time with")
+                if age < 18 or len(relationships_Romantic)<1:
+                    print("[5] LOCKED 🔒")
+                elif age > 17 and len(relationships_Romantic)>0 :
+                    print("[5] Have child")
+                print("[6] Compliment")
+            if len(children) > 0:
+                print("==== Child Activities ====")
+                print("[7] View Children")
+                print("[8] Spend time with")
+            select = input("Please select using number or C to cancel\n")
+            if select == "1":
+                pos = FriendActivity.spendTimeWith(relationships_Friend, relationships_Romantic, likeness_Friend, likeness_Romantic)
+                if pos != False:
+                    likeness = likeness + r.randint(1,5)
+                    likeness_Friend[pos] = likeness
+
+            elif select == "2":
+                pos = FriendActivity.askOut(relationships_Friend,likeness_Friend)
+                if pos != False:
+                    print("You are now going out")
+                    relationships_Romantic.append(relationships_Friend[pos])
+                    likeness_Romantic.append(likeness_Friend[pos])
+                    likeness_Friend[pos] = ""
+                    relationships_Friend[pos] = ""
+                
+            elif select == "3":
+                pos = FriendActivity.compliment(relationships_Friend, likeness_Friend)
+                likeness_Friend[pos] = likeness_Friend[pos] + r.randint(3,10)
+            
+            elif select == "4":
+                pos = FriendActivity_R.spendTimeWith(relationships_Romantic,likeness_Romantic)
+                if pos != False:
+                    likeness = likeness + r.randint(1,5)
+                    likeness_Romantic[pos] = likeness
+
+            elif select == "5":
+                if age < 18:
+                    print("You cannot do this until your're 18!")
+                else:
+                    if len(relationships_Romantic) < 1:
+                        print("No romantic sir")
+                    else:
+                        birthSuccess = Child.birthSuccess(happiness, health)
+                        if birthSuccess:
+                            childGender = Child.gender()
+                            if childGender.lower() == "f":
+                                childGender_print = "girl"
+                            else:
+                                childGender_print = "boy"
+                            print(f"It's a {childGender_print}")
+
+                            childName = Child.name(childGender, surnName)
+                            Child.makeStats(health, smarts, looks, happiness, childName)
+                            children.append(childName)
+                        else:
+                            print("Failed...")
+            
+            elif select == "6":
+                pos = FriendActivity_R.compliment(relationships_Romantic, likeness_Romantic)
+                likeness_Romantic[pos] = likeness_Romantic[pos] + r.randint(3,10)
+            
+            elif select == "7":
+                print("Your children")
+                print(children)
+                time.sleep(3)
+            
+            elif select == "8":
+                Child.spendTimeWith(children)
+            
+            elif select.upper() == "C":
+                print("\n")
+            
+        elif select == "4":
+            print("===== Friends =====")
+            print(relationships_Friend)
+            print("===== Romantic Relationships =====")
+            print(relationships_Romantic)
+
+        else:
+            print("INVALID/COMING SOON")
+    elif choice == "5":
         #DO AGE UP STUFF
         #random events
         print("AGEUP\n")
@@ -539,6 +698,9 @@ while alive == True:
             print(f"£{toPay_Car}left on loan")
             if toPay_Car <= 0:
                 onCarLoan = False
+        if len(children) >= 1:
+            childCost = Child.cost(children)
+            money = money - childCost
 
         
         money = money + Tax.income(salary)

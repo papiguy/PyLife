@@ -36,15 +36,19 @@ class Player:
         lastName = r.choice(surnNames)
         return lastName
     #players Family
-    def createMother(surnName):
+    def createMother(surnName, playerFirstName): #update these so that playername and father name arent equal
         motherNames = ["Sophie","Jess","Priscilla","Amy", "Chloe", "Josie", "Sophia", "Charlotte", "Emily"]
         firstName = r.choice(motherNames)
+        while firstName == playerFirstName:
+            firstName = r.choice(motherNames)
         mumName = firstName +" "+ surnName
         return mumName
     
-    def createFather(surnName):
+    def createFather(surnName, PlayerFirstName): #update these so that playername and father name arent equal
         fatherNames = ["John", "Hubert", "Joe", "Dave", "Lachlan", "Bill", "Shaun"]
         firstName = r.choice(fatherNames)
+        while firstName == PlayerFirstName:
+            firstName = r.choice(fatherNames)
         dadName = firstName +" "+ surnName
         return dadName
     
@@ -204,8 +208,3 @@ class Player:
         if health < 0:
             health = 0
         return health
-
-
-class Relationships:
-    #this class will interact directly with NPCs
-    relationships = []

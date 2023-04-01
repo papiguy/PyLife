@@ -1,0 +1,10 @@
+===== Patch V0.5 updates =====
+added the first iteration of the relationship system
+added some quality of life updates
+fixed some pesky bugs
+changed the parent name system
+
+===== Known Issues =====
+the first name in the relationship list is unable to be promoted to romantic partner
+
+=========================
